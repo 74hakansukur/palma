@@ -4,11 +4,13 @@
   "description": "test",
   "main": "index.js",
   "scripts": {
-    "test": "ava 'app/**/*.test.js' --verbose --require ./other/setup-ava-tests.js"
+    "production": "node_modules/webpack/bin/webpack -p",
+    "start": "node_modules/webpack-dev-server/bin/webpack-dev-server.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.11.0",
     "jquery": "^2.2.3"
   },
   "devDependencies": {
@@ -18,6 +20,7 @@
     "html-webpack-plugin": "^2.16.1",
     "react": "^15.0.2",
     "react-dom": "^15.0.2",
-    "webpack": "^1.13.0"
+    "webpack": "^1.13.0",
+    "webpack-dev-server": "^1.14.1"
   }
 }
