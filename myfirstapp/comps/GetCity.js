@@ -17,7 +17,7 @@ function InputField (props) {
     <input
       className='form-control'
       onChange={props.onUpdateCity}
-      placeholder='Budapest'
+      placeholder='Püspökladány'
       type='text'
       value={props.city} />
   )

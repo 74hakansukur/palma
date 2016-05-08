@@ -1,40 +1,50 @@
 var React = require('react');
-var PropTypes = React.PropTypes;
-var GetCity = require('../comps/GetCity');
+var Forecast = require('../comps/Forecast');
 var getForecast = require('../helpers/api').getForecast;
 
 var ForecastContainer = React.createClass({
-  getDefaultProps: function () {
-    return {
-      direction: 'column'
-    }
-  },
-  propTypes: {
-    direction: PropTypes.string
+  contextTypes: {
+    router: React.PropTypes.object.isRequired
   },
   getInitialState: function () {
     return {
-      city: ''
+      isLoading: true,
+      forecastData: {},
+      weather: {}
     }
   },
-  handleSubmitCity: function () {
-    console.log(this.state.city)
-    getForecast(this.state.city)
-  },
-  handleUpdateCity: function (e) {
-    this.setState({
-      city: e.target.value
+  handleClick: function (weather) {
+    this.context.router.push({
+      pathname: '/detail/' + this.props.routeParams.city,
+      state: {
+        weather: weather
+      }
     })
+  },
+  componentDidMount: function () {
+    this.makeRequest(this.props.routeParams.city)
+  },
+  componentWillReceiveProps: function (nextProps) {
+    this.makeRequest(nextProps.routeParams.city)
+  },
+  makeRequest: function (city) {
+    getForecast(city)
+      .then(function (forecastData) {
+        this.setState({
+          isLoading: false,
+          forecastData: forecastData
+        });
+      }.bind(this));
   },
   render: function () {
     return (
-      <GetCity
-        direction={this.props.direction}
-        onSubmitCity={this.handleSubmitCity}
-        onUpdateCity={this.handleUpdateCity}
-        city={this.state.city} />
+      <Forecast
+        city={this.props.routeParams.city}
+        isLoading={this.state.isLoading}
+        forecastData={this.state.forecastData} 
+	handleClick={this.handleClick} />
     )
   }
 });
 
-module.exports = GetCityContainer;
+module.exports = ForecastContainer;
